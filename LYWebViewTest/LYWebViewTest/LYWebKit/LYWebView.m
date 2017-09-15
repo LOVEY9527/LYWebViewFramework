@@ -9,10 +9,6 @@
 #import "LYWebView.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 
-@interface NSString (Category)
-
-@end
-
 @implementation NSString (Category)
 
 /**
@@ -35,10 +31,6 @@
     
     return nil;
 }
-
-@end
-
-@interface NSURL (Category)
 
 @end
 
@@ -85,6 +77,20 @@ static NSString * const kLYWVDefineBridgeValue = @"brigdeIosValue";
 @implementation LYWebView
 
 #pragma mark - overwrite
+
+- (void)dealloc
+{
+    JSContext *context = [self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+    if ([self.bridgeValue length] > 0)
+    {
+        context[self.bridgeValue] = nil;
+        context = nil;
+    }
+    
+#ifdef DEBUG
+    NSLog(@"LYWebView dealloc");
+#endif
+}
 
 /**
  初始化接口
@@ -218,8 +224,10 @@ static NSString * const kLYWVDefineBridgeValue = @"brigdeIosValue";
     if (([self.bridgeValue length] > 0) &&
         (self.bridge != nil))
     {
+//        NSLog(@"CFGetRetainCount((__bridge CFTypeRef)(manager)):%ld", CFGetRetainCount((__bridge CFTypeRef)(self.bridge)));
         context[self.bridgeValue] = self.bridge;
-    }    
+//        NSLog(@"CFGetRetainCount((__bridge CFTypeRef)(manager)):%ld", CFGetRetainCount((__bridge CFTypeRef)(self.bridge)));
+    }
     
     if ([self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)])
     {

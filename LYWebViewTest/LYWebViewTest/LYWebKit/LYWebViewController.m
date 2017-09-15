@@ -27,6 +27,13 @@
 
 #pragma mark - overwrite
 
+- (void)dealloc
+{
+#ifdef DEBUG
+    NSLog(@"LYWebViewController dealloced");
+#endif
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -100,6 +107,7 @@
  */
 - (void)registerBridge:(id<JSExport>)bridge forBridgeValue:(NSString *)bridgeValue
 {
+//    NSLog(@"CFGetRetainCount((__bridge CFTypeRef)(manager)):%ld", CFGetRetainCount((__bridge CFTypeRef)(bridge)));
     [self.webView registerBridge:bridge forBridgeValue:bridgeValue];
 }
 

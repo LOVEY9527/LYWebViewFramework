@@ -22,7 +22,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    LYWebView *webView = [[LYWebView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 300)];
+    LYWebView *webView = [[LYWebView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 100)];
     LYIOSWebManager *manager = [[LYIOSWebManager alloc] init];
     [webView registerBridge:manager forBridgeValue:@"iOS"];
     NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
@@ -35,10 +35,13 @@
 {
     LYWebViewController *webViewController = [[LYWebViewController alloc] initWithNavigationBarHidden:NO];
     LYIOSWebManager *iosWebManager = [[LYIOSWebManager alloc] init];
-    [webViewController registerBridge:iosWebManager];
+    NSLog(@"CFGetRetainCount((__bridge CFTypeRef)(manager)):%ld", CFGetRetainCount((__bridge CFTypeRef)(iosWebManager)));
+    [webViewController registerBridge:iosWebManager forBridgeValue:@"iOS"];
     NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
     [webViewController loadLocalURLString:sourcePath navigationTitle:@"标题" shouldShowActivityIndicator:YES];
     [self.navigationController pushViewController:webViewController animated:YES];
+    
+    NSLog(@"CFGetRetainCount((__bridge CFTypeRef)(manager)):%ld", CFGetRetainCount((__bridge CFTypeRef)(iosWebManager)));
 }
 
 - (void)didReceiveMemoryWarning

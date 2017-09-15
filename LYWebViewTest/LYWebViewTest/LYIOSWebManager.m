@@ -10,6 +10,11 @@
 
 @implementation LYIOSWebManager
 
+- (void)dealloc
+{
+    NSLog(@"manager dealloc");
+}
+
 /**
  初始化接口
  

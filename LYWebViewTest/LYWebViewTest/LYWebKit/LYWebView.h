@@ -9,6 +9,29 @@
 #import <UIKit/UIKit.h>
 #import <JavaScriptCore/JavaScriptCore.h>
 
+@interface NSString (Category)
+
+/**
+ 字符串UTF-8编码
+ 
+ @return 编码后的字符串
+ */
+- (nullable NSString *)customEncodingString;
+
+@end
+
+@interface NSURL (Category)
+
+/**
+ 网址字符串转为可加载的url(主要针对有汉字的网址字符串)
+ 
+ @param URLString url字符串
+ @return url
+ */
++ (nullable NSURL *)customURLWithString:(nonnull NSString *)URLString;
+
+@end
+
 @protocol LYWebViewDelegate;
 
 @interface LYWebView : UIView
