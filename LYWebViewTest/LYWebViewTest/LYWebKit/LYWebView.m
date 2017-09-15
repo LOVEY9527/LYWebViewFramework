@@ -224,6 +224,9 @@ static NSString * const kLYWVDefineBridgeValue = @"brigdeIosValue";
     if (([self.bridgeValue length] > 0) &&
         (self.bridge != nil))
     {
+        //注意：context[self.bridgeValue] = self.bridge导致self.bridge被JS引用，而JS的内存管理机制与OC不一样，属于垃圾回收机制
+        //所以最重self.bridge被回收的时间，开发者是不知道的，而且就算被回收了，会不会走self.bridge的dealloc方法也是未知的
+        //确保LYWebView被回收是最基本的。
 //        NSLog(@"CFGetRetainCount((__bridge CFTypeRef)(manager)):%ld", CFGetRetainCount((__bridge CFTypeRef)(self.bridge)));
         context[self.bridgeValue] = self.bridge;
 //        NSLog(@"CFGetRetainCount((__bridge CFTypeRef)(manager)):%ld", CFGetRetainCount((__bridge CFTypeRef)(self.bridge)));
